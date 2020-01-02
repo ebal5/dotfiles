@@ -1,0 +1,24 @@
+from archlinux
+
+ENV PATH=/usr/local/bin:${PATH} \
+  LANG=c.utf-8
+
+RUN set -ex ;\
+  pacman -Syu --noconfirm;\
+  pacman -Sy --noconfirm base base-devel expect git;\
+  pw=testpwd;\
+	useradd -m -G wheel -s /bin/bash test;\
+  expect -c "\
+  spawn passwd test\
+  expect \"New password:\"\
+  send -- \"${pw}\n\"\
+  expect \"Retype new password:\"\
+  send -- \"${pw}\n\"\
+  expect \"passwd: password updated successfully\"\
+  send -- \"exit\n\"\
+  ";\
+  echo "Set disable_coredump false" >> /etc/sudo.conf;\
+  echo "%wheel ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers.d/testuser
+
+WORKDIR /home/test
+ENTRYPOINT su test /home/test/.dotfiles/tools/entrypoint.sh
