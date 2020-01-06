@@ -18,7 +18,11 @@ RUN set -ex ;\
   send -- \"exit\n\"\
   ";\
   echo "Set disable_coredump false" >> /etc/sudo.conf;\
-  echo "%wheel ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers.d/testuser
+  echo "%wheel ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers.d/testuser ;\
+  mkdir -p /home/test/.dotfiles ;\
+  chown -R test:test /home/test/.dotfiles
 
 WORKDIR /home/test
+USER test
+VOLUME /home/test/.dotfiles
 ENTRYPOINT su test /home/test/.dotfiles/tools/entrypoint.sh

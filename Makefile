@@ -1,4 +1,3 @@
-export PATH := ${HOME}/bin:${HOME}/.local/bin:${PATH}
 DOTPATH    := $(realpath $(dir $(lastword $(MAKEFILE_LIST))))
 CANDIDATES := $(wildcard .??*)
 EXCLUSIONS := .DS_Store .git .gitmodules .travis.yml .config
@@ -15,11 +14,16 @@ list: ## Show dot files in this repo
 
 .PHONY: backup
 backup:
-	if [ ! -d $(HOME)/dotbackup ]; then mkdir -p $(HOME)/dotbackup; fi
-	@$(foreach val, $(DOTFILES), if [ -e $(HOME)/$(val) ]; then mv $(HOME)/$(val) $(HOME)/dotbackup/; fi;)
+	if [ ! -d $(HOME)/dotbackup ]; then \
+		mkdir -p $(HOME)/dotbackup/.config ;\
+		mkdir -p $(HOME)/dotbackup/bin ;\
+	fi
+	@$(foreach val, $(DOTFILES), if [ -e $(HOME)/$(val) ]; then mv $(HOME)/$(val) $(HOME)/dotbackup/$(val); fi;)
+	@$(foreach val, $(BINFILES), if [ -e $(HOME)/$(val) ]; then mv $(HOME)/$(val) $(HOME)/dotbackup/$(val); fi;)
+	@$(foreach val, $(CONFFILES), if [ -e $(HOME)/$(val) ]; then mv $(HOME)/$(val) $(HOME)/dotbackup/$(val); fi;)
 
 .PHONY: copy
-copy: $(DOTFILES) $(BINFILES)
+copy:
 	@$(foreach val, $(DOTFILES), /usr/bin/ln -sfnv $(abspath $(val)) $(HOME)/$(val);)
 	if [ ! -d $(HOME)/bin ]; then \
 		mkdir -p $(HOME)/bin ;\
@@ -32,7 +36,39 @@ copy: $(DOTFILES) $(BINFILES)
 
 .PHONY: init
 init:
-	curl -fsSL https://get.docker.com/rootless | sh
+	curl -fsSL "https://get.docker.com/rootless" | sh ;\
+	curl -L https://raw.github.com/simonwhitaker/gibo/master/gibo -so ~/bin/gibo && \
+		chmod +x ~/bin/gibo && \
+		~/bin/gibo update ;\
+	cd /tmp ;\
+	git clone https://github.com/powerline/fonts.git --depth=1 ;\
+	cd fonts ;\
+	./install.sh ;\
+	cd .. ;\
+	rm -rf fonts ;\
+	if [ ! -x /usr/bin/pip ]; then\
+		curl -kL "https://bootstrap.pypa.io/get-pip.py" | sudo python ;\
+		sudo pip install --upgrade pip ;\
+	fi
+	if [ ! -x /usr/bin/pip3 ]; then\
+	 	curl -kL "https://bootstrap.pypa.io/get-pip.py" | sudo python3 ;\
+		sudo pip install --upgrade pip3 ;\
+	fi
+	sudo pip install xkeysnail ;\
+	pip3 install --user beautifulsoup4 ;\
+	pip3 install --user autopep8 ;\
+	pip3 install --user flake8 ;\
+	pip3 install --user yapf ;\
+	pip3 install --user pandas ;\
+	which anyenv ;\
+	if [ ! $$? = 0 ]; then\
+		git clone "https://github.com/anyenv/anyenv" $(HOME)/.anyenv;\
+		$(HOME)/.anyenv/bin/anyenv init;\
+		$(HOME)/.anyenv/bin/anyenv install --force-init;\
+		$(HOME)/.anyenv/bin/anyenv install pyenv;\
+	fi
+	zsh tools/zsh-initialize.zsh
+
 
 .PHONY: archlinux_pre
 archlinux_pre:
@@ -45,60 +81,53 @@ archlinux_pre:
 		makepkg -si --noconfirm ;\
 		rm -rf /tmp/yay ;\
   fi
-	yay -Syyu --noconfirm
-	yay -S --noconfirm python
-	yay -S --noconfirm pandoc aria2 alsa-tools kakasi tldr zsh fish vim 
-	yay -S --noconfirm bat \
+	yay -Syyu --noconfirm ;\
+	yay -S --noconfirm \
+						alsa-tools \
+						aria2 \
+						bat \
+						docker \
+						fish \
+						kakasi \
+						lxc \
+						pandoc \
+						python \
+						powerline-fonts \
+						pacman-contrib \
+						tldr \
+						tmux \
+						vim \
+						yq \
+						zsh \
+            adobe-source-han-sans-jp-fonts adobe-source-han-serif-jp-fonts \
             exfat-utils \
             fd \
-            fzf \
+            jq \
             lsd \
+            otf-ipafont otf-ipaexfont \
             ripgrep \
             sd \
-            unarchiver \
-            usleep \
-            usbutils \
-            adobe-source-han-sans-jp-fonts adobe-source-han-serif-jp-fonts \
-            otf-ipafont otf-ipaexfont \
-						powerline-fonts \
             ttf-cica \
-						tmux \
-            xsv \
+            unarchiver \
+            usbutils \
+            usleep \
             xdg-user-dirs \
-            jq yq
-
-
-.PHONY: envs
-envs:
-	if [ ! -x /usr/bin/pip ]; then\
-		curl -kL "https://bootstrap.pypa.io/get-pip.py" | sudo python ;\
-		sudo pip install --upgrade pip ;\
-	fi
-	if [ ! -x /usr/bin/pip3 ]; then\
-	 	curl -kL "https://bootstrap.pypa.io/get-pip.py" | sudo python3 ;\
-		sudo pip install --upgrade pip3 ;\
-	fi
-	sudo pip install xkeysnail ;\
-	pip3 install --user beautifulsoup ;\
-	pip3 install --user autopep8 ;\
-	pip3 install --user flake8 ;\
-	pip3 install --user yapf ;\
-	pip3 install --user pandas ;\
-	which anyenv ;\
-	if [ ! $$? = 0 ]; then\
-		git clone "https://github.com/anyenv/anyenv" $(HOME)/.anyenv;\
-		$(HOME)/.anyenv/bin/anyenv init;\
-		$(HOME)/.anyenv/bin/anyenv install --force-init;\
-		$(HOME)/.anyenv/bin/anyenv install pyenv;\
-	fi
+            xsv ;\
+# Docker rootless
+	echo kernel.unprivileged_userns_clone=1 | sudo tee -a /etc/sysctl.conf ;\
+	sudo systemctl --system ;\
+	echo "${USER}:100000:65536" | sudo tee -a /etc/subuid ;\
+	echo "${USER}:100000:65536" | sudo tee -a /etc/subgid ;\
+	echo "lxc.net.0.type = empty" | sudo tee -a /etc/lxc/default.conf ;\
+	echo "lxc.idmap = u 0 100000 65536" | sudo tee -a /etc/lxc/default.conf ;\
+	echo "lxc.idmap = g 0 100000 65536" | sudo tee -a /etc/lxc/default.conf
 
 .PHONY: archlinux
-archlinux: archlinux_pre envs copy
+archlinux: archlinux_pre copy init ;
 
 .PHONY: archlinux_opt
 archlinux_opt: archlinux
-	yay -S --noconfirm docker \
-        emacs \
+	yay -S --noconfirm \
         evince \
         fcitx-configtool \
         fcitx-gtk2 \
@@ -107,7 +136,6 @@ archlinux_opt: archlinux
         fcitx-ui-light \
         i3 \
         lightdm \
-        pacman-contrib \
         parcellite \
         pavucontrol \
         pcloud-drive \
@@ -123,9 +151,9 @@ archlinux_opt: archlinux
         xorg \
         xorg-apps \
         xorg-drivers \
-        xsel \
+        xsel
 
 .PHONY: test
 test:
-	docker build -f tools/Dockerfile.archlinux -t dotfiles_archlinux tools
-	docker run -it --rm -v $(pwd):/home/test/.dotfiles dotfiles_archlinux
+	docker build -f tools/Dockerfile.archlinux -t dotfiles_archlinux tools ;\
+	docker run -it --rm -v $(pwd):/home/test/.dotfiles dotfiles_archlinux ;\
