@@ -1,2 +1,4 @@
 export ZPLUG_HOME=~/.zplug
-git clone https://github.com/zplug/zplug $ZPLUG_HOME
+if [ ! -d $ZPLUG_HOME ]; then
+    git clone https://github.com/zplug/zplug $ZPLUG_HOME
+fi

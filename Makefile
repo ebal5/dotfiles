@@ -36,7 +36,9 @@ copy:
 
 .PHONY: init
 init:
-	curl -fsSL "https://get.docker.com/rootless" | sh ;\
+	if [ ! -f $(HOME)/bin/docker ]; then \
+		curl -fsSL "https://get.docker.com/rootless" | sh ;\
+	fi
 	curl -L https://raw.github.com/simonwhitaker/gibo/master/gibo -so ~/bin/gibo && \
 		chmod +x ~/bin/gibo && \
 		~/bin/gibo update ;\
@@ -128,8 +130,20 @@ archlinux_pre:
 .PHONY: archlinux
 archlinux: archlinux_pre copy init ;
 
+.PHONEY: xkeysnail
+xkeysnail: init
+	$(eval USER := $(shell whoami))
+	echo 'KERNEL=="uinput", GROUP="uinput"' | sudo tee -a /etc/udev/rules.d/40-udev-xkeysnail.rules
+	sudo groupadd uinput
+	sudo useradd -G input,uinput -s /sbin/nologin xkeysnail
+	echo 'uinput' | sudo tee -a /etc/modules-load.d/uinput.conf
+	$(eval XKEYSNAIL := $(shell which xkeysnail))
+	sudo chmod 600 /etc/sudoers
+	echo "$(USER) ALL=(ALL) ALL, (xkeysnail) NOPASSWD: $(XKEYSNAIL)" | sudo tee -a /etc/sudoers
+	sudo chmod 440 /etc/sudoers
+
 .PHONY: archlinux_opt
-archlinux_opt: archlinux
+archlinux_opt: archlinux xkeysnail
 	yay -S --noconfirm \
         evince \
         fcitx-configtool \

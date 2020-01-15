@@ -13,12 +13,13 @@ for dn in "$HOME/bin" "$HOME/.local/bin"; do
 done
 
 if [ -f $HOME/bin/docker ]; then
-   systemctl --user start docker
-   export DOCKER_HOST=unix://$XDG_RUNTIME_DIR/docker.sock
+    if pidof systemd; then
+        systemctl --user start docker
+        export DOCKER_HOST=unix://$XDG_RUNTIME_DIR/docker.sock
+    fi
 fi
 
 alias ls="lsd"
-alias ls="ls --color=auto"
 alias grep="grep --color=auto"
 alias ll="ls -l"
 alias la="ls -la"
@@ -50,7 +51,7 @@ if which git > /dev/null ; then
     function ghome(){
         git rev-parse --show-toplevel
     }
-    alias cdgh="cd $(ghome)"
+    alias cgh='cd $(ghome)'
 fi
 
 function mcd(){
@@ -66,7 +67,7 @@ export XAPIAN_CJK_NGRAM=1
 CARGO_ROOT=$HOME/.cargo
 [ -d $CARGO_ROOT ] && PATH="$CARGO_ROOT/bin:$PATH"
 
-if which xsv > /dev/null ; then
+if which xsv > /dev/null && which xsel > /dev/null ; then
     function csvcp(){
         cat $1 | xsv fmt -t "\t" | xsel -b
     }

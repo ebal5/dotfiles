@@ -2,7 +2,7 @@
 if pgrep xkeysnail > /dev/null; then
     return 2>&-
 fi
-if [ ! -x /usr/bin/xkeysnail ]; then
+if ! which xkeysnail > /dev/null; then
     return 2>&-
 fi
 if ! pgrep xkeysnail > /dev/null; then
