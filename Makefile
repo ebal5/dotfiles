@@ -62,8 +62,7 @@ init:
 	pip3 install --user flake8 ;\
 	pip3 install --user yapf ;\
 	pip3 install --user pandas ;\
-	which anyenv ;\
-	if [ ! $$? = 0 ]; then\
+	if [ ! -d $(HOME)/.anyenv ]; then\
 		git clone "https://github.com/anyenv/anyenv" $(HOME)/.anyenv;\
 		$(HOME)/.anyenv/bin/anyenv init;\
 		$(HOME)/.anyenv/bin/anyenv install --force-init;\
@@ -130,20 +129,19 @@ archlinux_pre:
 .PHONY: archlinux
 archlinux: archlinux_pre copy init ;
 
-.PHONEY: xkeysnail
-xkeysnail: init
+.PHONEY: optional
+optional: init
+# for xkeysnail
 	$(eval USER := $(shell whoami))
 	echo 'KERNEL=="uinput", GROUP="uinput"' | sudo tee -a /etc/udev/rules.d/40-udev-xkeysnail.rules
 	sudo groupadd uinput
 	sudo useradd -G input,uinput -s /sbin/nologin xkeysnail
 	echo 'uinput' | sudo tee -a /etc/modules-load.d/uinput.conf
-	$(eval XKEYSNAIL := $(shell which xkeysnail))
-	sudo chmod 600 /etc/sudoers
-	echo "$(USER) ALL=(ALL) ALL, (xkeysnail) NOPASSWD: $(XKEYSNAIL)" | sudo tee -a /etc/sudoers
-	sudo chmod 440 /etc/sudoers
+# for spacemacs
+	git clone "https://github.com/syl20bnr/spacemacs" $(HOME)/.emacs.d
 
 .PHONY: archlinux_opt
-archlinux_opt: archlinux xkeysnail
+archlinux_opt: archlinux optional
 	yay -S --noconfirm \
         evince \
         fcitx-configtool \
@@ -151,6 +149,7 @@ archlinux_opt: archlinux xkeysnail
         fcitx-gtk3 \
         fcitx-mozc \
         fcitx-ui-light \
+				feh \
         i3 \
         lightdm \
         parcellite \

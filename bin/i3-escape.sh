@@ -6,7 +6,6 @@ case "$cmd" in
 	"poweroff" ) systemctl poweroff ;;
 	"reboot" ) systemctl reboot ;;
 	"lock" ) i3lock --color 000000 ;;
-	"suspend" ) i3lock && systemctl suspend ;;
+	"suspend" ) i3lock --color 000000 && systemctl suspend ;;
 	* ) i3-navbar -m "invalid command name"
 esac
-

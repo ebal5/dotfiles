@@ -5,7 +5,7 @@ fi
 if ! which xkeysnail > /dev/null; then
     return 2>&-
 fi
-if ! pgrep xkeysnail > /dev/null; then
+if ! pgrep xkeysnail > /dev/null && [ -f $HOME/.config/xkeysnail/config.py ]; then
     exec >> /tmp/xkeysnail.log 2>&1
     xhost +SI:localuser:xkeysnail > /dev/null
     tmp=$(mktemp /tmp/xkeysnail.XXXX.py)

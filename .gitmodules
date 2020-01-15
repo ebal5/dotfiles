@@ -1,3 +1,6 @@
 [submodule "tools/base16-termite"]
 	path = tools/base16-termite
 	url = https://github.com/khamer/base16-termite.git
+[submodule ".spacemacs.d"]
+	path = .spacemacs.d
+	url = git@github.com:ebal5/dotspacemacs.git
