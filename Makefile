@@ -66,6 +66,7 @@ init:
 		$(HOME)/.anyenv/bin/anyenv init;\
 		$(HOME)/.anyenv/bin/anyenv install --force-init;\
 		$(HOME)/.anyenv/bin/anyenv install pyenv;\
+		$(HOME)/.anyenv/bin/anyenv install plenv;\
 	fi
 	zsh tools/zsh-initialize.zsh
 
@@ -88,6 +89,7 @@ archlinux_pre:
 						bat \
 						docker \
 						fish \
+						fzf \
 						kakasi \
 						lxc \
 						pandoc \
@@ -112,14 +114,15 @@ archlinux_pre:
             usbutils \
             usleep \
             xdg-user-dirs \
-            xsv ;\
+            xsv
 # Docker rootless
-	echo kernel.unprivileged_userns_clone=1 | sudo tee -a /etc/sysctl.conf ;\
-	sudo systemctl --system ;\
-	echo "${USER}:100000:65536" | sudo tee -a /etc/subuid ;\
-	echo "${USER}:100000:65536" | sudo tee -a /etc/subgid ;\
-	echo "lxc.net.0.type = empty" | sudo tee -a /etc/lxc/default.conf ;\
-	echo "lxc.idmap = u 0 100000 65536" | sudo tee -a /etc/lxc/default.conf ;\
+	echo kernel.unprivileged_userns_clone=1 | sudo tee -a /etc/sysctl.conf
+	if pidof systemd; then sudo systemctl --system; fi
+	$(eval USER := $(shell whoami))
+	echo "$(USER):100000:65536" | sudo tee -a /etc/subuid
+	echo "$(USER):100000:65536" | sudo tee -a /etc/subgid
+	echo "lxc.net.0.type = empty" | sudo tee -a /etc/lxc/default.conf
+	echo "lxc.idmap = u 0 100000 65536" | sudo tee -a /etc/lxc/default.conf
 	echo "lxc.idmap = g 0 100000 65536" | sudo tee -a /etc/lxc/default.conf
 
 .PHONY: archlinux

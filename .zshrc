@@ -7,6 +7,18 @@ zplug load --verbose
 zplug "zsh-users/zsh-autosuggestions"
 zplug "zsh-users/zsh-syntax-highlighting"
 zplug "zsh-users/zsh-completions"
+zplug "modules/command-not-found", from:prezto
+zplug "b4b4r07/enhancd", use:init.sh
+
+if [[ ! -f "$HOME/.dotinstalled" ]]; then
+    zplug install
+    ln -s $HOME/.zplug/repos/sorin-ionescu/prezto $HOME/.zprezto
+    setopt EXTENDED_GLOB
+    for rcfile in "${ZDOTDIR:-$HOME}"/.zprezto/runcoms/^README.md(.N); do
+        ln -s "$rcfile" "${ZDOTDIR:-$HOME}/.${rcfile:t}"
+    done
+    touch $HOME/.dotinstalled
+fi
 
 # Source Prezto.
 if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
@@ -14,7 +26,7 @@ if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
 fi
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-if fzf -h 2> /dev/null ; then
+if which fzf > /dev/null ; then
 	  fuzzy=fzf
 	  if gibo help > /dev/null 2>&1; then
 		    function genignore() {
@@ -58,4 +70,4 @@ function runjava() {
 }
 alias -s java="runjava"
 
-[ -f ~/.config/shellrc ] && . ~/.config/shellrc
+[ -f $HOME/.config/shellrc ] && source $HOME/.config/shellrc

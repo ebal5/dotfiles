@@ -6,19 +6,20 @@ export SHELLRC=TRUE
 export LANGUAGE=en_US.UTF-8
 export LANG=en_US.UTF-8
 export LC_ALL=en_US.UTF-8
-export EDITOR=/usr/bin/vim
-
-systemctl --user start docker
-export DOCKER_HOST=unix:///run/user/$(id -u)/docker.sock
+export EDITOR=$(which vim)
 
 for dn in "$HOME/bin" "$HOME/.local/bin"; do
-  [[ -d  $dn ]] && export PATH="${dn}:${PATH}"
+    [[ -d  $dn ]] && export PATH="${dn}:${PATH}"
 done
 
-alias ls="ls --color=auto"
-alias grep="grep --color=auto"
+if [ -f $HOME/bin/docker ]; then
+   systemctl --user start docker
+   export DOCKER_HOST=unix://$XDG_RUNTIME_DIR/docker.sock
+fi
 
 alias ls="lsd"
+alias ls="ls --color=auto"
+alias grep="grep --color=auto"
 alias ll="ls -l"
 alias la="ls -la"
 alias lh="ls -lh"
@@ -31,7 +32,6 @@ alias e="echo"
 alias md="mkdir"
 alias less="less -F"
 alias len="wc -l"
-
 
 [ -d "$HOME/.texmf" ] && export TEXMFHOME="$HOME/.texmf"
 
@@ -46,7 +46,7 @@ export LESS_TERMCAP_ue=$'\E[0m'        # reset underline
 
 # User functions...
 
-if [ -x git ]; then
+if which git > /dev/null ; then
     function ghome(){
         git rev-parse --show-toplevel
     }
@@ -66,7 +66,7 @@ export XAPIAN_CJK_NGRAM=1
 CARGO_ROOT=$HOME/.cargo
 [ -d $CARGO_ROOT ] && PATH="$CARGO_ROOT/bin:$PATH"
 
-if [ -x xsv ]; then
+if which xsv > /dev/null ; then
     function csvcp(){
         cat $1 | xsv fmt -t "\t" | xsel -b
     }
@@ -75,6 +75,7 @@ fi
 [ -x $HOME/.anyenv/bin/anyenv ] &&\
      export PATH="$HOME/.anyenv/bin:$PATH" &&\
      eval "$(anyenv init -)" &&\
+     which pipenv > /dev/null &&\
      alias pipmd="env PIPENV_VENV_IN_PROJECT=true pipenv install -d" &&\
      eval "$(pipenv --completion)"
 
