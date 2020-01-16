@@ -6,7 +6,7 @@ export SHELLRC=TRUE
 export LANGUAGE=en_US.UTF-8
 export LANG=en_US.UTF-8
 export LC_ALL=en_US.UTF-8
-export EDITOR=$(which vim)
+export EDITOR=vim
 
 for dn in "$HOME/bin" "$HOME/.local/bin"; do
     [[ -d  $dn ]] && export PATH="${dn}:${PATH}"

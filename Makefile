@@ -107,6 +107,7 @@ archlinux_pre:
             fd \
             jq \
             lsd \
+						openssh \
             otf-ipafont otf-ipaexfont \
             ripgrep \
             sd \
