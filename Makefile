@@ -145,14 +145,14 @@ optional: init
 archlinux_opt: archlinux optional
 	yay -S --noconfirm \
         evince \
+        fcitx-im \
         fcitx-configtool \
-        fcitx-gtk2 \
-        fcitx-gtk3 \
         fcitx-mozc \
         fcitx-ui-light \
 				feh \
         i3 \
         lightdm \
+        lightdm-gtk-greeter \
         parcellite \
         pavucontrol \
         pcloud-drive \

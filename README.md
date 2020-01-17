@@ -16,7 +16,7 @@ feh --bg-fill HDMI2 用の壁紙 DP1 用の壁紙
 初期化の最後に visudo コマンドを用いて自身の使用するユーザに xkeysnail ユーザとして xkeysnail を実行する権限を付与すること．
 
 ```
-user ALL=(ALL) ALL, (xkeysnail) NOPASSWD: /usr/bin/xkeysnail /usr/sbin/xkeysnail xkeysnail
+USER_NAME ALL=(xkeysnail) NOPASSWD: /usr/bin/xkeysnail
 ```
 
 ### Arch Linux ###

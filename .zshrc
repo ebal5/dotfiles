@@ -40,14 +40,14 @@ function __chpwd_savepath() {
     $(pwd > $dirfile)
 }
 function __exit_rmpath() {
-    rm $dirfile
+    rm -f $dirfile
 }
 preexec() {
     local line=${1%%$'\n'}
     local cmd=${line%% *}
     if [ ${line} = 'exec ${SHELL}' -o $line = 'exec $SHELL' ] ; then
         if [ -f $dirfile ]; then
-            rm $dirfile
+            rm -f $dirfile
         fi
     fi
 }

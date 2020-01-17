@@ -12,5 +12,5 @@ if ! pgrep xkeysnail > /dev/null && [ -f $HOME/.config/xkeysnail/config.py ]; th
     cp $HOME/.config/xkeysnail/config.py $tmp
     chmod o+r $tmp
     sudo -u xkeysnail DISPLAY=$DISPLAY /usr/bin/xkeysnail $tmp > /dev/null &
-    eval "sleep 5 && rm $tmp" &
+    eval "sleep 5 && rm -f $tmp" &
 fi
