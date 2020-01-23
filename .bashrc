@@ -64,7 +64,7 @@ function set_bash(){
 # If not running interactively, don't do anything
 [[ $- != *i* ]] && return
 
-if which fish 2> /dev/null; then
+if which fish &> /dev/null; then
     exec fish
 else
     set_bash

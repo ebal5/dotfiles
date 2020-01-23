@@ -17,7 +17,7 @@ if [ -f $HOME/bin/docker ]; then
     fi
 fi
 
-which lsd > /dev/null && alias ls="lsd"
+which lsd &> /dev/null && alias ls="lsd"
 alias grep="grep --color=auto"
 alias ll="ls -l"
 alias la="ls -la"
@@ -45,7 +45,7 @@ export LESS_TERMCAP_ue=$'\E[0m'        # reset underline
 
 # User functions...
 
-if which git > /dev/null ; then
+if which git &> /dev/null ; then
     function ghome(){
         git rev-parse --show-toplevel
     }
@@ -65,7 +65,7 @@ export XAPIAN_CJK_NGRAM=1
 CARGO_ROOT=$HOME/.cargo
 [ -d $CARGO_ROOT ] && PATH="$CARGO_ROOT/bin:$PATH"
 
-if which xsv > /dev/null && which xsel > /dev/null ; then
+if which xsv &> /dev/null && which xsel &> /dev/null ; then
     function csvcp(){
         cat $1 | xsv fmt -t "\t" | xsel -b
     }
@@ -75,7 +75,7 @@ fi
 
 if [ -x $HOME/.anyenv/bin/anyenv ]; then \
      export PATH="$HOME/.anyenv/bin:$PATH" && eval "$(anyenv init -)"
-     which pipenv > /dev/null && \
+     which pipenv &> /dev/null && \
          alias pipmd="env PIPENV_VENV_IN_PROJECT=true pipenv install -d" && \
          eval "$(pipenv --completion)"
 fi
