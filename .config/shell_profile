@@ -1,0 +1,25 @@
+# -*- coding:utf-8 -*-
+#+STARTUP: shell-script-mode
+
+export LANGUAGE=en_US.UTF-8
+export LANG=en_US.UTF-8
+export LC_ALL=en_US.UTF-8
+export EDITOR=vim
+export XAPIAN_CJK_NGRAM=1
+[ -f "$HOME/.config/pythonstartup.py" ] && export PYTHONSTARTUP="$HOME/.config/pythonstartup.py"
+[ -d "$HOME/.texmf" ] && export TEXMFHOME="$HOME/.texmf"
+
+for dn in "$HOME/local/bin" "$HOME/local/usr/bin" "$HOME/bin" "$HOME/.local/bin" "$HOME/.poetry/bin"; do
+    [[ -d  $dn ]] && export PATH="${dn}:${PATH}"
+done
+
+if [ -f $HOME/bin/docker ]; then
+    if pidof systemd && ! systemctl --user is-active docker > /dev/null; then
+        systemctl --user start docker
+        export DOCKER_HOST=unix://$XDG_RUNTIME_DIR/docker.sock
+    fi
+fi
+
+CARGO_ROOT=$HOME/.cargo; [ -d $CARGO_ROOT ] && PATH="$CARGO_ROOT/bin:$PATH"
+
+
