@@ -1,22 +1,6 @@
 # -*- coding:utf-8 -*-
 #+STARTUP: shell-script-mode
 
-export LANGUAGE=en_US.UTF-8
-export LANG=en_US.UTF-8
-export LC_ALL=en_US.UTF-8
-export EDITOR=vim
-
-for dn in "$HOME/local/bin" "$HOME/local/usr/bin" "$HOME/bin" "$HOME/.local/bin"; do
-    [[ -d  $dn ]] && export PATH="${dn}:${PATH}"
-done
-
-if [ -f $HOME/bin/docker ]; then
-    if pidof systemd; then
-        systemctl --user start docker
-        export DOCKER_HOST=unix://$XDG_RUNTIME_DIR/docker.sock
-    fi
-fi
-
 which lsd &> /dev/null && alias ls="lsd"
 alias grep="grep --color=auto"
 alias ll="ls -l"
@@ -32,7 +16,6 @@ alias md="mkdir"
 alias less="less -F"
 alias len="wc -l"
 
-[ -d "$HOME/.texmf" ] && export TEXMFHOME="$HOME/.texmf"
 
 export LESS=-R
 export LESS_TERMCAP_mb=$'\E[1;31m'     # begin bold
@@ -57,13 +40,6 @@ function mcd(){
 }
 
 # load local settings.
-
-[ -f "$HOME/.config/pythonstartup.py" ] && export PYTHONSTARTUP="$HOME/.config/pythonstartup.py"
-
-export XAPIAN_CJK_NGRAM=1
-
-CARGO_ROOT=$HOME/.cargo
-[ -d $CARGO_ROOT ] && PATH="$CARGO_ROOT/bin:$PATH"
 
 if which xsv &> /dev/null && which xsel &> /dev/null ; then
     function csvcp(){

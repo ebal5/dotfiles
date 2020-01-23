@@ -23,7 +23,7 @@ backup:
 	@$(foreach val, $(CONFFILES), if [ -e $(HOME)/$(val) ]; then mv $(HOME)/$(val) $(HOME)/dotbackup/$(val); fi;)
 
 .PHONY: copy
-copy:
+copy: backup
 	@$(foreach val, $(DOTFILES), /usr/bin/ln -sfnv $(abspath $(val)) $(HOME)/$(val);)
 	if [ ! -d $(HOME)/bin ]; then \
 		mkdir -p $(HOME)/bin ;\
@@ -67,7 +67,7 @@ init:
 		$(HOME)/.anyenv/bin/anyenv init;\
 		$(HOME)/.anyenv/bin/anyenv install --force-init;\
 		$(HOME)/.anyenv/bin/anyenv install pyenv;\
-		$(HOME)/.anyenv/bin/anyenv install plenv;\
+		$(HOME)/.anyenv/bin/anyenv install plenv;
 	fi
 	zsh tools/zsh-initialize.zsh
 
