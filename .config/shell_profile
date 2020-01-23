@@ -21,5 +21,3 @@ if [ -f $HOME/bin/docker ]; then
 fi
 
 CARGO_ROOT=$HOME/.cargo; [ -d $CARGO_ROOT ] && PATH="$CARGO_ROOT/bin:$PATH"
-
-

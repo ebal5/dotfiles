@@ -52,7 +52,6 @@ function set_bash(){
 
     export PS1="\u@\h:\W$(parse_git_branch)\n\$ "
     alias ls='ls --color=auto'
-    PS1='[\u@\h \W]\$ '
 
     [ -e $HOME/bin/ssh-agent.sh ] && source $HOME/bin/ssh-agent.sh
     if [ -f $HOME/.config/shellrc ]; then
