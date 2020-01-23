@@ -9,8 +9,11 @@ export XAPIAN_CJK_NGRAM=1
 [ -f "$HOME/.config/pythonstartup.py" ] && export PYTHONSTARTUP="$HOME/.config/pythonstartup.py"
 [ -d "$HOME/.texmf" ] && export TEXMFHOME="$HOME/.texmf"
 
-for dn in "$HOME/local/bin" "$HOME/local/usr/bin" "$HOME/bin" "$HOME/.local/bin" "$HOME/.poetry/bin"; do
+for dn in "$HOME/bin" "$HOME/.local/bin" "$HOME/.poetry/bin"; do
     [[ -d  $dn ]] && export PATH="${dn}:${PATH}"
+done
+for dn in "$HOME/local/bin" "$HOME/local/usr/bin"; do
+    [[ -d  $dn ]] && export PATH="${PATH}:${dn}"
 done
 
 if [ -f $HOME/bin/docker ]; then
