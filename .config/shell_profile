@@ -12,15 +12,19 @@ export XAPIAN_CJK_NGRAM=1
 for dn in "$HOME/bin" "$HOME/.local/bin" "$HOME/.poetry/bin"; do
     [[ -d  $dn ]] && export PATH="${dn}:${PATH}"
 done
-for dn in "$HOME/local/bin" "$HOME/local/usr/bin"; do
-    [[ -d  $dn ]] && export PATH="${PATH}:${dn}"
-done
+# for dn in "$HOME/local/bin" "$HOME/local/usr/bin"; do
+#     [[ -d  $dn ]] && export PATH="${PATH}:${dn}"
+# done
 
 if [ -f $HOME/bin/docker ]; then
-    if pidof systemd && ! systemctl --user is-active docker > /dev/null; then
+    if pidof systemd &> /dev/null && ! systemctl --user is-active docker &> /dev/null; then
         systemctl --user start docker
-        export DOCKER_HOST=unix://$XDG_RUNTIME_DIR/docker.sock
     fi
 fi
-
+[ -f $XDG_RUNTIME_DIR/docker.sock ] && export DOCKER_HOST=unix://$XDG_RUNTIME_DIR/docker.sock
 CARGO_ROOT=$HOME/.cargo; [ -d $CARGO_ROOT ] && PATH="$CARGO_ROOT/bin:$PATH"
+
+if ! pidof gpg-agent &> /dev/null; then
+    gpg-agent
+    export SSH_AUTH_SOCK="$(gpgconf --list-dirs agent-ssh-socket)"
+fi

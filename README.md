@@ -44,3 +44,14 @@ define_multipurpose_modmap({
 ```
 
 日本語キーボードの場合は Win キーを置きかえる設定が必要．
+
+## LightDM の設定 ##
+/etc/lightdm/lightdm.conf にディスプレイの設定を記述すると幸せになれるかも．
+とくに常に Dual Display する場合は書くとログイン画面から正常に動作してくれる．
+
+[Seat:*] セクションに，
+```
+display-setup-script=xrandr --output DP1 --primary
+display-setup-script=xrandr --output HDMI2 --right-of DP1 --rotate left
+```
+みたいに記述する．

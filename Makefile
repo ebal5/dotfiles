@@ -74,8 +74,8 @@ init:
 
 .PHONY: archlinux_pre
 archlinux_pre:
-	sudo pacman -Syu --noconfirm ;\
-  sudo pacman -S --noconfirm git ;\
+	sudo pacman -Syu --noconfirm
+  sudo pacman -S --noconfirm git
 	if [ ! -x /usr/bin/yay ]; then\
 		cd /tmp;\
 		git clone "https://aur.archlinux.org/yay.git" &&\
@@ -83,16 +83,18 @@ archlinux_pre:
 		makepkg -si --noconfirm ;\
 		rm -rf /tmp/yay ;\
   fi
-	yay -Syyu --noconfirm ;\
+	yay -Syyu --noconfirm
 	yay -S --noconfirm \
 						alsa-tools \
 						aria2 \
+						avahi \
 						bat \
 						docker \
 						fish \
 						fzf \
 						kakasi \
 						lxc \
+						nss-mdns \
 						pandoc \
 						python \
 						powerline-fonts \
@@ -169,6 +171,8 @@ archlinux_opt: archlinux optional
         xorg-apps \
         xorg-drivers \
         xsel
+	sudo systemctl enable lightdm
+	sudo systemctl enable avahi-daemon
 
 .PHONY: test
 test:
