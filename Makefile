@@ -159,6 +159,7 @@ archlinux_opt: archlinux optional
         pavucontrol \
         pcloud-drive \
         picom \
+				poppler-data \
         qalculate-gtk \
         rofi \
         sl \

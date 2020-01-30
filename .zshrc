@@ -2,6 +2,17 @@ export SHELL=$(which zsh)
 
 source ~/.zplug/init.zsh
 zplug "sorin-ionescu/prezto"
+# prezto plugins
+zplug "modules/environment", from:prezto
+zplug "modules/terminal", from:prezto
+zplug "modules/editor", from:prezto
+zplug "modules/history", from:prezto
+zplug "modules/directory", from:prezto
+zplug "modules/spectrum", from:prezto
+zplug "modules/utility", from:prezto
+zplug "modules/completion", from:prezto
+zplug "modules/prompt", from:prezto
+zplug "modules/homebrew", from:prezto
 zplug load --verbose
 
 zplug "zsh-users/zsh-autosuggestions"
@@ -23,6 +34,13 @@ fi
 # Source Prezto.
 if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
   source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
+fi
+
+if ! zplug check --verbose; then
+  printf 'Install? [y/N]: '
+  if read -q; then
+    echo; zplug install
+  fi
 fi
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
