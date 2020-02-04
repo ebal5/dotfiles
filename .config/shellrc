@@ -57,7 +57,4 @@ gpg-connect-agent updatestartuptty /bye >/dev/null
 
 if [ -x $HOME/.anyenv/bin/anyenv ]; then \
      export PATH="$HOME/.anyenv/bin:$PATH" && eval "$(anyenv init -)"
-     which pipenv &> /dev/null && \
-         alias pipmd="env PIPENV_VENV_IN_PROJECT=true pipenv install -d" && \
-         eval "$(pipenv --completion)"
 fi

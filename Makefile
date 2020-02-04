@@ -67,7 +67,7 @@ init:
 		$(HOME)/.anyenv/bin/anyenv init;\
 		$(HOME)/.anyenv/bin/anyenv install --force-init;\
 		$(HOME)/.anyenv/bin/anyenv install pyenv;\
-		$(HOME)/.anyenv/bin/anyenv install plenv;
+		$(HOME)/.anyenv/bin/anyenv install plenv;\
 	fi
 	zsh tools/zsh-initialize.zsh
 
@@ -75,7 +75,7 @@ init:
 .PHONY: archlinux_pre
 archlinux_pre:
 	sudo pacman -Syu --noconfirm
-  sudo pacman -S --noconfirm git
+	sudo pacman -S --noconfirm git
 	if [ ! -x /usr/bin/yay ]; then\
 		cd /tmp;\
 		git clone "https://aur.archlinux.org/yay.git" &&\
