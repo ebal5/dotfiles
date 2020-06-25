@@ -54,6 +54,10 @@ bindsym $mod+d exec rofi -modi combi -show combi
 # start calculator
 bindsym $mod+c exec rofi -modi calc:qalc -show calc
 
+# take a screenshot
+bindsym $mod+p exec ~/.config/i3/scr_window.sh
+bindsym $mod+P exec ~/.config/i3/scr_region.sh
+
 # change focus
 bindsym $mod+h focus left
 bindsym $mod+j focus down
@@ -190,7 +194,7 @@ exec --no-startup-id ~/bin/xkeysnail.sh
 #exec --no-startup-id ~/bin/ssh-agent.sh
 exec --no-startup-id pcloud
 exec --no-startup-id picom -b
-exec --no-startup-id fcitx-autostart
+#exec --no-startup-id fcitx-autostart
 exec --no-startup-id parcellite
 exec --no-startup-id volumeicon
 exec --no-startup-id ~/.config/i3/init.sh

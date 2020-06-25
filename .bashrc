@@ -68,3 +68,8 @@ if which fish &> /dev/null; then
 else
     set_bash
 fi
+
+#THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
+export SDKMAN_DIR="/home/ebal/.sdkman"
+[[ -s "/home/ebal/.sdkman/bin/sdkman-init.sh" ]] && source "/home/ebal/.sdkman/bin/sdkman-init.sh"
+export CLASSPATH=$CLASSPATH:data/corenlp/*

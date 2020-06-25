@@ -89,3 +89,7 @@ function runjava() {
 alias -s java="runjava"
 
 [ -f $HOME/.config/shellrc ] && source $HOME/.config/shellrc
+
+#THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
+export SDKMAN_DIR="/home/ebal/.sdkman"
+[[ -s "/home/ebal/.sdkman/bin/sdkman-init.sh" ]] && source "/home/ebal/.sdkman/bin/sdkman-init.sh"
