@@ -2,6 +2,7 @@
 	name = Shuichi Tani
 	email = muminn4@gmail.com
 [alias]
+	a = add
 	s = status
 	ss = status -s
 	l = log
