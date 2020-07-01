@@ -58,9 +58,9 @@ export GPG_TTY=$(tty)
 gpg-connect-agent updatestartuptty /bye >/dev/null
 
 if [ -x $HOME/.anyenv/bin/anyenv ]; then \
-     export PATH="$HOME/.anyenv/bin:$PATH" && eval "$(anyenv init -)"
+    export PATH="$HOME/.anyenv/bin:$PATH" && eval "$(anyenv init -)"
 fi
 
 if which opam > /dev/null; then \
-       eval "$(opam env)"; \
+    eval "$(opam env)"
 fi
