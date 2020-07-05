@@ -16,6 +16,9 @@ alias md="mkdir"
 alias less="less -F"
 alias le="less"
 alias len="wc -l"
+if which docker --help > /dev/null ; then
+    alias dkr=docker
+fi
 
 
 export LESS=-R
