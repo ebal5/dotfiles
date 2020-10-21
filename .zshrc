@@ -48,6 +48,7 @@ if which fzf > /dev/null ; then
 	  fuzzy=fzf
 	  if gibo help > /dev/null 2>&1; then
 		    function genignore() {
+            touch .gitignore
 			      gibo dump $(gibo list | fzf --multi | tr "\n" " ") >> .gitignore
 		    }
 	  fi
@@ -93,3 +94,7 @@ alias -s java="runjava"
 #THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
 export SDKMAN_DIR="/home/ebal/.sdkman"
 [[ -s "/home/ebal/.sdkman/bin/sdkman-init.sh" ]] && source "/home/ebal/.sdkman/bin/sdkman-init.sh"
+if whereis gh > /dev/null; then
+    eval $(gh completion --shell zsh)
+fi
+test -r /home/${HOME}/.opam/opam-init/init.zsh && . /home/${HOME}/.opam/opam-init/init.zsh > /dev/null 2> /dev/null || true
